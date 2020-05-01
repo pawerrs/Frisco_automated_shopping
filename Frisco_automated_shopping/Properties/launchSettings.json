@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Frisco_automated_shopping": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
