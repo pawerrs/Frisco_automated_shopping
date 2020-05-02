@@ -3,14 +3,12 @@ using System.IO;
 using Frisco_automated_shopping.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 
 namespace Frisco_automated_shopping.Configuration
 {
     public static class BaseConfiguration
     {
-        public static void ConfigureApplication()
+        public static void ConfigureApplication(DeliveryCriteria deliveryCriteria)
         {
             var services = new ServiceCollection();
             var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -33,7 +31,7 @@ namespace Frisco_automated_shopping.Configuration
 
             var serviceProvider = services.BuildServiceProvider();
 
-            serviceProvider.GetService<FriscoResolver>().InitializeDriver();
+            serviceProvider.GetService<FriscoResolver>().InitializeDriver(deliveryCriteria);
         }
     }
 }

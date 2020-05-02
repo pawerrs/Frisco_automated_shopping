@@ -4,8 +4,7 @@ using OpenQA.Selenium.Chrome;
 using Frisco_automated_shopping.Extensions;
 using Frisco_automated_shopping.Models;
 using System.Drawing;
-using OpenQA.Selenium.Remote;
-using System;
+using System.IO;
 
 namespace Frisco_automated_shopping
 {
@@ -20,12 +19,13 @@ namespace Frisco_automated_shopping
             this.appSettings = appSettings.Value;
         }
 
-        public void InitializeDriver()
+        public void InitializeDriver(DeliveryCriteria deliveryCriteria)
         {
-            ChromeOptions options = new ChromeOptions();
-            options.AddArguments($"load-extension={appSettings.AdBlockLocation}");
-
-            IWebDriver driver = new ChromeDriver(appSettings.ChromeDriverLocation, options)
+            ChromeOptions options = new ChromeOptions
+            {
+                PageLoadStrategy = PageLoadStrategy.None
+            };
+            IWebDriver driver = new ChromeDriver($"{Directory.GetCurrentDirectory()}\\ChromeDriver", options)
             {
                 Url = appSettings.Url
             };
@@ -34,9 +34,7 @@ namespace Frisco_automated_shopping
             driver.Manage().Window.Maximize();
 
             driver.SwitchTo().Window(driver.WindowHandles[0]);
-
-            driver.Login(secureSettings.Email, secureSettings.Password)
-                .HandleReservation();
+            driver.Begin(deliveryCriteria, secureSettings.Email, secureSettings.Password);
         }
     }
 }
